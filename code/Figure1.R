@@ -116,3 +116,14 @@ wilcox.test(usda_dip$het, usda_trip$het)
 
 trips <- het_info_usda %>% filter(het >=0.425)
 dips <- het_info_usda %>% filter(het <0.425)
+
+#Save information for subsequent use and supplemental data
+
+supp_table <- het_info_usda %>% select(apple_id, PLANTID, usda_ploidy=ploidy, het)
+supp_table <- supp_table %>% mutate(ploidy=ifelse(het >=0.425, "3x", "2x"))
+
+table(supp_table$ploidy)
+
+write_csv(supp_table, "data/abc_apple_ploidy.csv")
+
+#This is included as Table S1 in the paper
