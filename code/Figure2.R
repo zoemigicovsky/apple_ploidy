@@ -12,14 +12,26 @@ colnames(genomic_pcs)[1] <- "apple_id"
 
 genomic_pcs_ploidy <- genomic_pcs %>% inner_join(apple_ploidy)
 
+#Add in % Variance explained
+
+eigenvalue <- read_delim("data/ploidy_pcs_eigenvalue.txt")
+
+#Analysis here is written in Java, which uses 0-based arrays instead of 1 based arrays, so 0 is the first PC.
+
+pc1_var <- eigenvalue[1,"proportion of total"]
+pc1_var <- round(pc1_var*100, digits=2)
+pc2_var <- eigenvalue[2,"proportion of total"]
+pc2_var <- round(pc2_var*100, digits=2)
+
 p <- ggplot(genomic_pcs_ploidy, aes(x=PC1, y=PC2))
 figure2a <- p + geom_point(data = subset(genomic_pcs_ploidy, ploidy=="2x"),color="#56B4E9", size=3, alpha=0.9, stroke=0)+ 
   geom_point(data = subset(genomic_pcs_ploidy, ploidy=="3x"),color="#E69F00", size=3, alpha=0.9, stroke=0)+ 
-  theme_classic()
+  theme_classic()+
+  labs(x=paste("PC1 (", pc1_var, "%)", sep=""), y=paste("PC2 (", pc2_var, "%)", sep=""))
 
 #IBS comparison
 
-#Load in similiarity file, this was generated using PLINK
+#Load in similarity file, this was generated using PLINK
 
 ibs_mat <-  read.table("data/ploidy_ibs.mibs")
 #Get sample names from het table
