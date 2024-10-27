@@ -1,13 +1,7 @@
 library(tidyverse)
 
-#Load in apple ploidy labels
-apple_ploidy <- read_csv("data/abc_apple_ploidy.csv")
-
-#Add data to Watts et al table Dataset_S1.xlsx
-supp_data <- read_excel("data/Dataset_S1.xlsx",  sheet = "phenotype_data")
-
-#Only keep rows that occur in both tables
-data_ploidy <- supp_data %>% inner_join(apple_ploidy)
+#Load in apple trait and ploidy
+data_ploidy <- read_csv("data/TableS1.csv")
 
 #Select only the trait of interest, get rid of NAs, and then table the results to see what number of diploids/triploids remain 
 
